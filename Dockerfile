@@ -9,6 +9,7 @@ RUN yum install -y \
         php-mysql \
         php-pear
 RUN pecl install xdebug-2.2.7
+## Output logs to stdxxx
 RUN echo 'TransferLog /dev/stdout' >> /etc/httpd/conf/httpd.conf && \
     echo 'ErrorLog /dev/stderr' >> /etc/httpd/conf/httpd.conf
 
