@@ -1,10 +1,16 @@
 FROM centos:6.6
 MAINTAINER blackawa
 WORKDIR /usr/src
-RUN yum install -y php php-mysql
-RUN ln -s /dev/stdout /var/log/httpd/access.log && \
-    ln -s /dev/stderr /var/log/httpd/error.log && \
-    ln -s /dev/stdout /var/log/httpd/other_vhosts_access.log
+ADD xdebug.ini /etc/php.d/
+RUN yum install -y \
+        gcc \
+        php \
+        php-devel \
+        php-mysql \
+        php-pear
+RUN pecl install xdebug-2.2.7
+RUN echo 'TransferLog /dev/stdout' >> /etc/httpd/conf/httpd.conf && \
+    echo 'ErrorLog /dev/stderr' >> /etc/httpd/conf/httpd.conf
 
 EXPOSE 80
 CMD ["apachectl", "-D", "FOREGROUND"]
